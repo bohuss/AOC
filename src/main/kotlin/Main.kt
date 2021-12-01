@@ -1,6 +1,5 @@
 import java.io.ByteArrayOutputStream
 import java.io.File
-import java.io.IOException
 import java.io.InputStream
 import java.net.URI
 import java.net.URLEncoder
@@ -8,7 +7,6 @@ import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
 import java.util.zip.GZIPInputStream
-import kotlin.math.absoluteValue
 
 val year = 2021
 val day = 1
@@ -17,7 +15,8 @@ val inputLink = "$taskLink/input"
 val submitLink = "$taskLink/answer"
 
 //Cookie: _ga=GA1.2.1310892297.1638293400; _gid=GA1.2.408434988.1638293400; session=53616c7465645f5f9aea5cfaa12feb4de663def3faf8a7c997ef0b6e7e93f57b3cac4703400b81a751ad989eea4571d5; _gat=1
-val cookie = "_ga=GA1.2.1310892297.1638293400; _gid=GA1.2.408434988.1638293400; session=53616c7465645f5f9aea5cfaa12feb4de663def3faf8a7c997ef0b6e7e93f57b3cac4703400b81a751ad989eea4571d5; _gat=1"
+//Cookie: _ga=GA1.2.895313618.1638307751; _gid=GA1.2.1644388470.1638307751; _gat=1; session=53616c7465645f5f51bd8029eb9466f6f1fd27f915c2f8962ebb7c57c99f655e156276666a9cd96423c565ec163cadd2
+val cookie = "_ga=GA1.2.1310892297.1638293400; _gid=GA1.2.408434988.1638293400; session=53616c7465645f5f51bd8029eb9466f6f1fd27f915c2f8962ebb7c57c99f655e156276666a9cd96423c565ec163cadd2; _gat=1"
 
 val dx = arrayOf(0, 1, 0, -1)
 val dy = arrayOf(1, 0, -1, 0)
@@ -94,27 +93,32 @@ fun submitAnswer(answer: Answer) {
     println(decompressGZIP(response.body().inputStream()))
 }
 
-val testAnswer1 = "1985"
+val testAnswer1 = "7"
 fun part1(input: List<String>): String {
     var ans = 0
+    var prev = 10000000
     for(line in input){
-        println(line)
-
+//        println(line)
+        val now = line.toInt()
+        if(now>prev)ans++
+        prev = now
     }
-    println("\nANS1:")
+    println("ANS1:")
     println(ans)
     return "$ans"
 }
 
-val testAnswer2 = "1985"
+val testAnswer2 = "5"
 fun part2(input: List<String>): String {
     var ans = 0
-    for(line in input){
-        println(line)
-
+    var prev = 1000000000
+    for(i in 0 until input.size - 2){
+        val now = input[i].toInt() + input[i+1].toInt() + input[i+2].toInt()
+        if(now>prev)ans++
+        prev = now
     }
 
-    println("\nANS2:")
+    println("ANS2:")
     println(ans)
     return "$ans"
 }
@@ -128,7 +132,7 @@ fun main() {
 
     val testInput = readTestInput()
 
-    println("TEST")
+    print("TEST ")
     val myTestAnswer1 = part1(testInput)
     val ans1 = part1(getInputLines())
 //    val ans1 = part1(readInput())
@@ -139,7 +143,7 @@ fun main() {
         println("1 Should be $testAnswer1")
     }
 
-    println("TEST")
+    print("TEST ")
     val myTestAnswer2 = part2(testInput)
     val ans2 = part2(getInputLines())
 //    val ans2 = part2(readInput())
