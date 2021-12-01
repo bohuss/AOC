@@ -93,35 +93,6 @@ fun submitAnswer(answer: Answer) {
     println(decompressGZIP(response.body().inputStream()))
 }
 
-val testAnswer1 = "7"
-fun part1(input: List<String>): String {
-    var ans = 0
-    var prev = 10000000
-    for(line in input){
-//        println(line)
-        val now = line.toInt()
-        if(now>prev)ans++
-        prev = now
-    }
-    println("ANS1:")
-    println(ans)
-    return "$ans"
-}
-
-val testAnswer2 = "5"
-fun part2(input: List<String>): String {
-    var ans = 0
-    var prev = 1000000000
-    for(i in 0 until input.size - 2){
-        val now = input[i].toInt() + input[i+1].toInt() + input[i+2].toInt()
-        if(now>prev)ans++
-        prev = now
-    }
-
-    println("ANS2:")
-    println(ans)
-    return "$ans"
-}
 
 fun readInput() = File("src", "$day.txt").readLines()
 
@@ -132,26 +103,28 @@ fun main() {
 
     val testInput = readTestInput()
 
+    val day = Day1()
+
     print("TEST ")
-    val myTestAnswer1 = part1(testInput)
-    val ans1 = part1(getInputLines())
+    val myTestAnswer1 = day.part1(testInput)
+    val ans1 = day.part1(getInputLines())
 //    val ans1 = part1(readInput())
-    if( myTestAnswer1 == "$testAnswer1") {
-        submitAnswer(Answer("1","$ans1")) //
+    if( myTestAnswer1 == "${day.testAnswer1}") {
+//        submitAnswer(Answer("1","$ans1")) //
     } else {
         println("1 Returned $myTestAnswer1")
-        println("1 Should be $testAnswer1")
+        println("1 Should be ${day.testAnswer1}")
     }
 
     print("TEST ")
-    val myTestAnswer2 = part2(testInput)
-    val ans2 = part2(getInputLines())
+    val myTestAnswer2 = day.part2(testInput)
+    val ans2 = day.part2(getInputLines())
 //    val ans2 = part2(readInput())
-    if(myTestAnswer2 == "$testAnswer2") {
-        submitAnswer(Answer("2","$ans2")) //
+    if(myTestAnswer2 == "${day.testAnswer2}") {
+//        submitAnswer(Answer("2","$ans2")) //
     } else {
         println("2 Returned $myTestAnswer2")
-        println("2 Should be $testAnswer2")
+        println("2 Should be ${day.testAnswer2}")
     }
 
 
