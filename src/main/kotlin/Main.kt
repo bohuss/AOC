@@ -9,7 +9,7 @@ import java.net.http.HttpResponse
 import java.util.zip.GZIPInputStream
 
 val year = 2021
-val day = 1
+val day = 2
 val taskLink = "https://adventofcode.com/$year/day/$day"
 val inputLink = "$taskLink/input"
 val submitLink = "$taskLink/answer"
@@ -62,8 +62,8 @@ fun getInputLines(): List<String> {
         .build()
     val response = client.send(request, HttpResponse.BodyHandlers.ofByteArray())
 //    println(request)
-//    println("Status:")
-//    println(response.statusCode())
+    print("Input Status: ")
+    println(response.statusCode())
 //    println(response.headers())
 //    println(decompressGZIP(response.body().inputStream()))
     return decompressGZIP(response.body().inputStream())!!.split("\n").filter { it.isNotBlank() }
@@ -87,8 +87,8 @@ fun submitAnswer(answer: Answer) {
     val response = client.send(request, HttpResponse.BodyHandlers.ofByteArray())
 //    println(request)
 //    println("Submitted answer ${answer.answer} for level ${answer.level} ans the response is:")
-//    println("Status:")
-//    println(response.statusCode())
+    print("Submit Status: ")
+    println(response.statusCode())
 //    println(response.headers())
     println(decompressGZIP(response.body().inputStream()))
 }
@@ -103,14 +103,14 @@ fun main() {
 
     val testInput = readTestInput()
 
-    val day = Day1()
+    val day = Day2()
 
     print("TEST ")
     val myTestAnswer1 = day.part1(testInput)
     val ans1 = day.part1(getInputLines())
 //    val ans1 = part1(readInput())
     if( myTestAnswer1 == "${day.testAnswer1}") {
-//        submitAnswer(Answer("1","$ans1")) //
+        submitAnswer(Answer("1","$ans1")) //
     } else {
         println("1 Returned $myTestAnswer1")
         println("1 Should be ${day.testAnswer1}")
@@ -121,7 +121,7 @@ fun main() {
     val ans2 = day.part2(getInputLines())
 //    val ans2 = part2(readInput())
     if(myTestAnswer2 == "${day.testAnswer2}") {
-//        submitAnswer(Answer("2","$ans2")) //
+        submitAnswer(Answer("2","$ans2")) //
     } else {
         println("2 Returned $myTestAnswer2")
         println("2 Should be ${day.testAnswer2}")
