@@ -8,9 +8,10 @@ import java.net.http.HttpRequest
 import java.net.http.HttpResponse
 import java.util.zip.GZIPInputStream
 
-val year = 2021
-val day = 3
-val taskLink = "https://adventofcode.com/$year/day/$day"
+val nYear = 2021
+val nDay = 2
+val day = Day2()
+val taskLink = "https://adventofcode.com/$nYear/day/$nDay"
 val inputLink = "$taskLink/input"
 val submitLink = "$taskLink/answer"
 val submit = false
@@ -18,9 +19,6 @@ val submit = false
 //Cookie: _ga=GA1.2.1310892297.1638293400; _gid=GA1.2.408434988.1638293400; session=53616c7465645f5f9aea5cfaa12feb4de663def3faf8a7c997ef0b6e7e93f57b3cac4703400b81a751ad989eea4571d5; _gat=1
 //Cookie: _ga=GA1.2.895313618.1638307751; _gid=GA1.2.1644388470.1638307751; _gat=1; session=53616c7465645f5f51bd8029eb9466f6f1fd27f915c2f8962ebb7c57c99f655e156276666a9cd96423c565ec163cadd2
 val cookie = "_ga=GA1.2.1310892297.1638293400; _gid=GA1.2.408434988.1638293400; session=53616c7465645f5f51bd8029eb9466f6f1fd27f915c2f8962ebb7c57c99f655e156276666a9cd96423c565ec163cadd2; _gat=1"
-
-val dx = arrayOf(0, 1, 0, -1)
-val dy = arrayOf(1, 0, -1, 0)
 
 data class Answer (
     val level: String,
@@ -100,38 +98,68 @@ fun submitAnswer(answer: Answer) {
 }
 
 
-fun readInput() = File("src", "$day.txt").readLines()
+fun readInput() = File("src", "inputs/$nDay.txt").readLines()
 
-fun readTestInput() = File("src", "inputs/$day.test").readLines()
+fun readTestInput() = File("src", "inputs/$nDay.test").readLines()
+
+fun saveInput(lines: List<String>, nDay: Int) = File("src", "inputs/$nDay.txt")
+    .writeText(lines.joinToString("\n"))
 
 fun main() {
 
-
     val testInput = readTestInput()
 
-    val day = Day3()
-
-    print("TEST ")
+    println("TEST 1")
     val myTestAnswer1 = day.part1(testInput)
-    val ans1 = day.part1(getInputLines())
-//    val ans1 = part1(readInput())
+
+    println("REAL 1")
+    val ans1 = readInput().let {
+        if(it.isEmpty()){
+            getInputLines()
+                .also {
+                    saveInput(it, nDay)
+                }
+        }
+        else {
+            it
+        }
+    }.let {
+        day.part1(it)
+    }
+
     if( myTestAnswer1 == "${day.testAnswer1}") {
         submitAnswer(Answer("1","$ans1")) //
     } else {
         println("1 Returned $myTestAnswer1")
         println("1 Should be ${day.testAnswer1}")
+        println("1 NOT SUBMITTING: $ans1")
     }
 
-    print("TEST ")
+    println("TEST 2")
     val myTestAnswer2 = day.part2(testInput)
-    val ans2 = day.part2(getInputLines())
-//    val ans2 = part2(readInput())
+    println("REAL 2")
+
+    val ans2 = readInput().let {
+        if(it.isEmpty()){
+            getInputLines()
+                .also {
+                    saveInput(it, nDay)
+                }
+        }
+        else {
+            it
+        }
+    }.let {
+        day.part2(it)
+    }
+
     if(myTestAnswer2 == "${day.testAnswer2}") {
         submitAnswer(Answer("2","$ans2")) //
     } else {
         println("2 Returned $myTestAnswer2")
         println("2 Should be ${day.testAnswer2}")
+        println("2 NOT SUBMITTING: $ans2")
     }
 
-
 }
+
