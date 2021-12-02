@@ -9,7 +9,7 @@ import java.net.http.HttpResponse
 import java.util.zip.GZIPInputStream
 
 val year = 2021
-val day = 2
+val day = 3
 val taskLink = "https://adventofcode.com/$year/day/$day"
 val inputLink = "$taskLink/input"
 val submitLink = "$taskLink/answer"
@@ -109,7 +109,7 @@ fun main() {
 
     val testInput = readTestInput()
 
-    val day = Day2()
+    val day = Day3()
 
     print("TEST ")
     val myTestAnswer1 = day.part1(testInput)
