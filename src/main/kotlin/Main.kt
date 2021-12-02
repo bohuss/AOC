@@ -13,6 +13,7 @@ val day = 2
 val taskLink = "https://adventofcode.com/$year/day/$day"
 val inputLink = "$taskLink/input"
 val submitLink = "$taskLink/answer"
+val submit = false
 
 //Cookie: _ga=GA1.2.1310892297.1638293400; _gid=GA1.2.408434988.1638293400; session=53616c7465645f5f9aea5cfaa12feb4de663def3faf8a7c997ef0b6e7e93f57b3cac4703400b81a751ad989eea4571d5; _gat=1
 //Cookie: _ga=GA1.2.895313618.1638307751; _gid=GA1.2.1644388470.1638307751; _gat=1; session=53616c7465645f5f51bd8029eb9466f6f1fd27f915c2f8962ebb7c57c99f655e156276666a9cd96423c565ec163cadd2
@@ -71,6 +72,10 @@ fun getInputLines(): List<String> {
 
 fun submitAnswer(answer: Answer) {
     val values = mapOf("level" to answer.level, "answer" to answer.answer)
+    if(!submit) {
+        println("SUBMIT IS DISABLED: $answer")
+        return
+    }
 
     val client = HttpClient.newBuilder().build();
     val request = HttpRequest.newBuilder()
@@ -91,12 +96,13 @@ fun submitAnswer(answer: Answer) {
     println(response.statusCode())
 //    println(response.headers())
     println(decompressGZIP(response.body().inputStream()))
+    println("SUBMITTED: $answer")
 }
 
 
 fun readInput() = File("src", "$day.txt").readLines()
 
-fun readTestInput() = File("src", "$day.test").readLines()
+fun readTestInput() = File("src", "inputs/$day.test").readLines()
 
 fun main() {
 
