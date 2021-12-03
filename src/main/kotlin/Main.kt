@@ -1,20 +1,23 @@
 import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.InputStream
+import java.lang.StringBuilder
 import java.net.URI
 import java.net.URLEncoder
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
+import java.time.Instant
 import java.util.zip.GZIPInputStream
+import kotlin.random.Random
 
 val nYear = 2021
-val nDay = 2
-val day = Day2()
+val nDay = 3
+val day = Day3()
 val taskLink = "https://adventofcode.com/$nYear/day/$nDay"
 val inputLink = "$taskLink/input"
 val submitLink = "$taskLink/answer"
-val submit = false
+val submit = true
 
 //Cookie: _ga=GA1.2.1310892297.1638293400; _gid=GA1.2.408434988.1638293400; session=53616c7465645f5f9aea5cfaa12feb4de663def3faf8a7c997ef0b6e7e93f57b3cac4703400b81a751ad989eea4571d5; _gat=1
 //Cookie: _ga=GA1.2.895313618.1638307751; _gid=GA1.2.1644388470.1638307751; _gat=1; session=53616c7465645f5f51bd8029eb9466f6f1fd27f915c2f8962ebb7c57c99f655e156276666a9cd96423c565ec163cadd2
@@ -93,8 +96,10 @@ fun submitAnswer(answer: Answer) {
     print("Submit Status: ")
     println(response.statusCode())
 //    println(response.headers())
-    println(decompressGZIP(response.body().inputStream()))
+    val output = decompressGZIP(response.body().inputStream())
+    saveOutput(getResult(output), nDay, answer.level)
     println("SUBMITTED: $answer")
+    println(getResult(output))
 }
 
 
@@ -105,8 +110,12 @@ fun readTestInput() = File("src", "inputs/$nDay.test").readLines()
 fun saveInput(lines: List<String>, nDay: Int) = File("src", "inputs/$nDay.txt")
     .writeText(lines.joinToString("\n"))
 
+fun saveOutput(s: String, nDay: Int, level: String) = File("src", "inputs/$nYear-$nDay-$level-${Instant.now()}.txt")
+    .writeText(s)
+
 fun main() {
 
+    println(getResult(File("src", "outputs/correctAnswer2.txt").readText()))
     val testInput = readTestInput()
 
     println("TEST 1")
@@ -162,4 +171,41 @@ fun main() {
     }
 
 }
+
+fun getResult(s: String?): String {
+    if(s == null) {
+        return "--nothing--"
+    }
+    var p = s.indexOf("<main>")
+    p = s.indexOf("<article>", p)
+    p = s.indexOf("<p>", p)
+    p += "<p>".length
+    val start = p
+    p = s.indexOf("</p>", p)
+    val text = s.substring(start, p)
+    return clean(text)
+}
+
+fun clean(text: String): String {
+    var add = true
+    val sb = StringBuilder()
+    for(c in text) {
+        when(c) {
+            '<' -> {
+                add = false
+            }
+            '>' -> {
+                add = true
+            }
+            else -> {
+                if(add) {
+                    sb.append(c)
+                }
+            }
+        }
+
+    }
+    return sb.toString()
+}
+
 
