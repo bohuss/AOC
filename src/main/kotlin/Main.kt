@@ -97,7 +97,7 @@ fun submitAnswer(answer: Answer) {
     println(response.statusCode())
 //    println(response.headers())
     val output = decompressGZIP(response.body().inputStream())
-    saveOutput(output?:"--no-output--" + "\n------\n" + getResult(output), nDay, answer.level)
+    saveOutput((output?:"--no-output--") + "\n------\n" + getResult(output), nDay, answer.level)
     println("SUBMITTED: $answer")
     println(getResult(output))
 }
