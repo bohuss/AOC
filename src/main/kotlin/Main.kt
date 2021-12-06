@@ -12,8 +12,8 @@ import java.util.zip.GZIPInputStream
 import kotlin.random.Random
 
 val nYear = 2021
-val nDay = 5
-val day = Day5()
+val nDay = 6
+val day = Day6()
 val taskLink = "https://adventofcode.com/$nYear/day/$nDay"
 val inputLink = "$taskLink/input"
 val submitLink = "$taskLink/answer"
@@ -110,18 +110,18 @@ fun readTestInput() = File("src", "inputs/$nDay.test").readLines()
 fun saveInput(lines: List<String>, nDay: Int) = File("src", "inputs/$nDay.txt")
     .writeText(lines.joinToString("\n"))
 
-fun saveOutput(s: String, nDay: Int, level: String) = File("src", "inputs/$nYear-$nDay-$level-${Instant.now()}.txt")
+fun saveOutput(s: String, nDay: Int, level: String) = File("src", "outputs/$nYear-$nDay-$level-${Instant.now()}.txt")
     .writeText(s)
 
 fun main() {
 
-    println(getResult(File("src", "outputs/correctAnswer2.txt").readText()))
     val testInput = readTestInput()
 
-    println("TEST 1")
-    val myTestAnswer1 = day.part1(testInput)
+    val myTestAnswer1 = if(testInput.isNullOrEmpty())day.testAnswer1 else {
+        println("TEST 1")
+        day.part1(testInput)
+    }
 
-    println("REAL 1")
     val ans1 = readInput().let {
         if(it.isEmpty()){
             getInputLines()
@@ -133,6 +133,7 @@ fun main() {
             it
         }
     }.let {
+        println("REAL 1")
         day.part1(it)
     }
 
@@ -144,9 +145,12 @@ fun main() {
         println("1 NOT SUBMITTING: $ans1")
     }
 
-    println("TEST 2")
-    val myTestAnswer2 = day.part2(testInput)
-    println("REAL 2")
+
+    val myTestAnswer2 = if(testInput.isNullOrEmpty())day.testAnswer2 else {
+        println("TEST 2")
+        day.part2(testInput)
+    }
+
 
     val ans2 = readInput().let {
         if(it.isEmpty()){
@@ -159,6 +163,7 @@ fun main() {
             it
         }
     }.let {
+        println("REAL 2")
         day.part2(it)
     }
 
