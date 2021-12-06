@@ -12,8 +12,8 @@ import java.util.zip.GZIPInputStream
 import kotlin.random.Random
 
 val nYear = 2021
-val nDay = 6
-val day = Day6()
+val nDay = 7
+val day = Day7()
 val taskLink = "https://adventofcode.com/$nYear/day/$nDay"
 val inputLink = "$taskLink/input"
 val submitLink = "$taskLink/answer"
