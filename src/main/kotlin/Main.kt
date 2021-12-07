@@ -21,118 +21,22 @@ val submit = true
 
 val cookie = System.getenv("AOC_COOKIE")
 
-data class Answer (
-    val level: String,
-    val answer: String
-)
-
-
-fun String.utf8(): String = URLEncoder.encode(this, "UTF-8")
-
-fun formData(data: Map<String, String>): HttpRequest.BodyPublisher? {
-
-    val res = data.map {(k, v) -> "${(k.utf8())}=${v.utf8()}"}
-        .joinToString("&")
-
-    return HttpRequest.BodyPublishers.ofString(res)
-}
-
-//decompresser
-fun decompressGZIP(inputStream: InputStream?): String? {
-    val bodyStream: InputStream = GZIPInputStream(inputStream)
-    val outStream = ByteArrayOutputStream()
-    val buffer = ByteArray(4096)
-    var length: Int
-    while (bodyStream.read(buffer).also { length = it } > 0) {
-        outStream.write(buffer, 0, length)
-    }
-    return String(outStream.toByteArray())
-}
-
-fun getInputLines(): List<String> {
-    val client = HttpClient.newBuilder().build();
-    if(cookie.isNullOrBlank()){
-        println("AOC_COOKIE not found")
-        return emptyList()
-    }
-    val request = HttpRequest.newBuilder()
-        .uri(URI.create(inputLink))
-        .header("Cookie", cookie)
-        .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8")
-        .header("Accept-Encoding", "gzip, deflate, br")
-        .header("Accept-Language", "en-US,en;q=0.5")
-        .header("Cache-Control", "no-cache")
-        .header("Origin", "https://adventofcode.com")
-        .build()
-    val response = client.send(request, HttpResponse.BodyHandlers.ofByteArray())
-//    println(request)
-    print("Input Status: ")
-    println(response.statusCode())
-//    println(response.headers())
-//    println(decompressGZIP(response.body().inputStream()))
-    return decompressGZIP(response.body().inputStream())!!.split("\n").filter { it.isNotBlank() }
-}
-
-fun submitAnswer(answer: Answer) {
-    val values = mapOf("level" to answer.level, "answer" to answer.answer)
-    if(!submit) {
-        println("SUBMIT IS DISABLED: $answer")
-        return
-    }
-    if(cookie.isNullOrBlank()){
-        println("AOC_COOKIE not found, answer: $answer")
-        return
-    }
-
-    val client = HttpClient.newBuilder().build();
-    val request = HttpRequest.newBuilder()
-        .uri(URI.create(submitLink))
-        .POST(formData(values))
-        .header("Content-Type", "application/x-www-form-urlencoded")
-        .header("Cookie", cookie)
-        .header("Accept", "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8")
-        .header("Accept-Encoding", "gzip, deflate, br")
-        .header("Accept-Language", "en-US,en;q=0.5")
-        .header("Cache-Control", "no-cache")
-        .header("Origin", "https://adventofcode.com")
-        .build()
-    val response = client.send(request, HttpResponse.BodyHandlers.ofByteArray())
-//    println(request)
-//    println("Submitted answer ${answer.answer} for level ${answer.level} ans the response is:")
-    print("Submit Status: ")
-    println(response.statusCode())
-//    println(response.headers())
-    val output = decompressGZIP(response.body().inputStream())
-    saveOutput((output?:"--no-output--") + "\n------\n" + getResult(output), nDay, answer.level)
-    println("SUBMITTED: $answer")
-    println(getResult(output))
-}
-
-
-fun readInput() = File("src", "inputs/$nDay.txt").readLines()
-
-fun readTestInput() = File("src", "inputs/$nDay.test").readLines()
-
-fun saveInput(lines: List<String>, nDay: Int) = File("src", "inputs/$nDay.txt")
-    .writeText(lines.joinToString("\n"))
-
-fun saveOutput(s: String, nDay: Int, level: String) = File("src", "outputs/$nYear-$nDay-$level-${Instant.now()}.txt")
-    .writeText(s)
+val aocUtils = AOCUtils()
 
 fun main() {
 
-    val testInput = readTestInput()
+    val testInput = aocUtils.readTestInput()
 
     val myTestAnswer1 = if(testInput.isNullOrEmpty())day.testAnswer1 else {
         println("TEST 1")
         day.part1(testInput)
     }
 
-    val ans1 = readInput().let {
+    val ans1 = aocUtils.readInput().let {
         if(it.isEmpty()){
-            getInputLines()
+            aocUtils.getInputLines()
                 .also {
-                    saveInput(it, nDay)
+                    aocUtils.saveInput(it, nDay)
                 }
         }
         else {
@@ -144,7 +48,7 @@ fun main() {
     }
 
     if( myTestAnswer1 == "${day.testAnswer1}") {
-        submitAnswer(Answer("1","$ans1")) //
+        aocUtils.submitAnswer(AOCUtils.Answer("1", "$ans1")) //
     } else {
         println("1 Returned $myTestAnswer1")
         println("1 Should be ${day.testAnswer1}")
@@ -158,11 +62,11 @@ fun main() {
     }
 
 
-    val ans2 = readInput().let {
+    val ans2 = aocUtils.readInput().let {
         if(it.isEmpty()){
-            getInputLines()
+            aocUtils.getInputLines()
                 .also {
-                    saveInput(it, nDay)
+                    aocUtils.saveInput(it, nDay)
                 }
         }
         else {
@@ -174,7 +78,7 @@ fun main() {
     }
 
     if(myTestAnswer2 == "${day.testAnswer2}") {
-        submitAnswer(Answer("2","$ans2")) //
+        aocUtils.submitAnswer(AOCUtils.Answer("2", "$ans2")) //
     } else {
         println("2 Returned $myTestAnswer2")
         println("2 Should be ${day.testAnswer2}")
@@ -183,40 +87,5 @@ fun main() {
 
 }
 
-fun getResult(s: String?): String {
-    if(s == null) {
-        return "--nothing--"
-    }
-    var p = s.indexOf("<main>")
-    p = s.indexOf("<article>", p)
-    p = s.indexOf("<p>", p)
-    p += "<p>".length
-    val start = p
-    p = s.indexOf("</p>", p)
-    val text = s.substring(start, p)
-    return clean(text)
-}
-
-fun clean(text: String): String {
-    var add = true
-    val sb = StringBuilder()
-    for(c in text) {
-        when(c) {
-            '<' -> {
-                add = false
-            }
-            '>' -> {
-                add = true
-            }
-            else -> {
-                if(add) {
-                    sb.append(c)
-                }
-            }
-        }
-
-    }
-    return sb.toString()
-}
 
 
