@@ -12,12 +12,12 @@ import java.util.zip.GZIPInputStream
 import kotlin.random.Random
 
 val nYear = 2021
-val nDay = 7
-val day = Day7()
+val nDay = 8
+val day = Day8()
 val taskLink = "https://adventofcode.com/$nYear/day/$nDay"
 val inputLink = "$taskLink/input"
 val submitLink = "$taskLink/answer"
-val submit = false
+val submit = true
 
 val cookie = System.getenv("AOC_COOKIE")
 
