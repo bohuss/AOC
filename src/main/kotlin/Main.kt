@@ -1,6 +1,6 @@
 val nYear = 2021
-val nDay = 9
-val day = Day9()
+val nDay = 10
+val day = Day10()
 val taskLink = "https://adventofcode.com/$nYear/day/$nDay"
 val inputLink = "$taskLink/input"
 val submitLink = "$taskLink/answer"
@@ -14,7 +14,7 @@ fun main() {
 
     val testInput = aocUtils.readTestInput()
 
-    val myTestAnswer1 = if(testInput.isNullOrEmpty())day.testAnswer1 else {
+    val myTestAnswer1 = if(testInput.isEmpty())day.testAnswer1 else {
         println("TEST 1")
         day.part1(testInput)
     }
@@ -34,8 +34,8 @@ fun main() {
         day.part1(it)
     }
 
-    if( myTestAnswer1 == "${day.testAnswer1}") {
-        aocUtils.submitAnswer(AOCUtils.Answer("1", "$ans1")) //
+    if( myTestAnswer1 == day.testAnswer1) {
+        aocUtils.submitAnswer(AOCUtils.Answer("1", ans1)) //
     } else {
         println("1 Returned $myTestAnswer1")
         println("1 Should be ${day.testAnswer1}")
@@ -43,7 +43,7 @@ fun main() {
     }
 
 
-    val myTestAnswer2 = if(testInput.isNullOrEmpty())day.testAnswer2 else {
+    val myTestAnswer2 = if(testInput.isEmpty())day.testAnswer2 else {
         println("TEST 2")
         day.part2(testInput)
     }
@@ -64,8 +64,8 @@ fun main() {
         day.part2(it)
     }
 
-    if(myTestAnswer2 == "${day.testAnswer2}") {
-        aocUtils.submitAnswer(AOCUtils.Answer("2", "$ans2")) //
+    if(myTestAnswer2 == day.testAnswer2) {
+        aocUtils.submitAnswer(AOCUtils.Answer("2", ans2)) //
     } else {
         println("2 Returned $myTestAnswer2")
         println("2 Should be ${day.testAnswer2}")
