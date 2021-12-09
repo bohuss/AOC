@@ -1,16 +1,3 @@
-import java.io.ByteArrayOutputStream
-import java.io.File
-import java.io.InputStream
-import java.lang.StringBuilder
-import java.net.URI
-import java.net.URLEncoder
-import java.net.http.HttpClient
-import java.net.http.HttpRequest
-import java.net.http.HttpResponse
-import java.time.Instant
-import java.util.zip.GZIPInputStream
-import kotlin.random.Random
-
 val nYear = 2021
 val nDay = 9
 val day = Day9()
