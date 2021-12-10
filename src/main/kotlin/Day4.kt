@@ -1,4 +1,4 @@
-data class Ticket (
+class Ticket (
     var id: Int,
     var lines: Array<IntArray> = Array(5){IntArray(5)},
     var seen: Array<BooleanArray> = Array(5){BooleanArray(5)},
@@ -10,7 +10,7 @@ data class Ticket (
         var ans = 0
         for(i in 0 until 5) {
             for (j in 0 until 5) {
-                if (seen[i][j] == false) {
+                if (!seen[i][j]) {
                     ans += lines[i][j]
                 }
             }

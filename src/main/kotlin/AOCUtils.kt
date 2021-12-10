@@ -18,9 +18,9 @@ class AOCUtils {
     )
 
 
-    fun String.utf8(): String = URLEncoder.encode(this, "UTF-8")
+    private fun String.utf8(): String = URLEncoder.encode(this, "UTF-8")
 
-    fun formData(data: Map<String, String>): HttpRequest.BodyPublisher? {
+    private fun formData(data: Map<String, String>): HttpRequest.BodyPublisher? {
 
         val res = data.map {(k, v) -> "${(k.utf8())}=${v.utf8()}"}
             .joinToString("&")
@@ -29,7 +29,7 @@ class AOCUtils {
     }
 
     //decompresser
-    fun decompressGZIP(inputStream: InputStream?): String? {
+    private fun decompressGZIP(inputStream: InputStream?): String {
         val bodyStream: InputStream = GZIPInputStream(inputStream)
         val outStream = ByteArrayOutputStream()
         val buffer = ByteArray(4096)
@@ -41,7 +41,7 @@ class AOCUtils {
     }
 
     fun getInputLines(): List<String> {
-        val client = HttpClient.newBuilder().build();
+        val client = HttpClient.newBuilder().build()
         if(cookie.isNullOrBlank()){
             println("AOC_COOKIE not found")
             return emptyList()
@@ -75,7 +75,7 @@ class AOCUtils {
             return
         }
 
-        val client = HttpClient.newBuilder().build();
+        val client = HttpClient.newBuilder().build()
         val request = HttpRequest.newBuilder()
             .uri(URI.create(submitLink))
             .POST(formData(values))
@@ -107,10 +107,10 @@ class AOCUtils {
     fun saveInput(lines: List<String>, nDay: Int) = File("src", "inputs/$nDay.txt")
         .writeText(lines.joinToString("\n"))
 
-    fun saveOutput(s: String, nDay: Int, level: String) = File("src", "outputs/$nYear-$nDay-$level-${Instant.now()}.txt")
+    private fun saveOutput(s: String, nDay: Int, level: String) = File("src", "outputs/$nYear-$nDay-$level-${Instant.now()}.txt")
         .writeText(s)
 
-    fun getResult(s: String?): String {
+    private fun getResult(s: String?): String {
         if(s == null) {
             return "--nothing--"
         }
@@ -124,7 +124,7 @@ class AOCUtils {
         return clean(text)
     }
 
-    fun clean(text: String): String {
+    private fun clean(text: String): String {
         var add = true
         val sb = StringBuilder()
         for(c in text) {

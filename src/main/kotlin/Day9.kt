@@ -2,8 +2,8 @@ import java.util.*
 
 class Day9 {
     val testAnswer1 = "15"
-    val dx = arrayOf(-1,0,1,0)
-    val dy = arrayOf(0, -1,0,1)
+    private val dx = arrayOf(-1,0,1,0)
+    private val dy = arrayOf(0, -1,0,1)
     fun part1(input: List<String>): String {
         var ans = 0L
         val R = input.size

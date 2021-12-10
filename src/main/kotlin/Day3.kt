@@ -17,9 +17,9 @@ class Day3 {
         var y = 0L
         for(i in 0 until N) {
             if(c1[i] >= c0[i]){
-                x = x + (1L shl (N - i- 1))
+                x += (1L shl (N - i - 1))
             } else {
-                y = y + (1L shl (N -i-1))
+                y += (1L shl (N - i - 1))
             }
         }
         ans = x * y
@@ -82,10 +82,10 @@ class Day3 {
         var y = 0L
         for(i in 0 until N) {
             if(a.single()[i]=='1'){
-                x = x + (1L shl (N - i- 1))
+                x += (1L shl (N - i - 1))
             }
             if(b.single()[i]=='1'){
-                y = y + (1L shl (N -i-1))
+                y += (1L shl (N - i - 1))
             }
         }
         ans = x * y

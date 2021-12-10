@@ -26,7 +26,7 @@ class Day6 {
         var ans = 0L
         val N = input.size
 
-        var b = input[0].split(",").map { it.toInt() }.toIntArray()
+        val b = input[0].split(",").map { it.toInt() }.toIntArray()
         var a = LongArray(10)
         for(x in b){
             a[x]++
@@ -42,7 +42,7 @@ class Day6 {
             }
             a = b
         }
-        ans = a.sum().toLong()
+        ans = a.sum()
 
         return "$ans"
     }

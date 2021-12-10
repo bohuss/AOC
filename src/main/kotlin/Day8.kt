@@ -14,7 +14,7 @@ class Day8 {
     val testAnswer2 = "61229"
     fun part2(input: List<String>): String {
 
-        val dig = mapOf<String, Int>(
+        val dig = mapOf(
             "abcefg" to 0,
             "cf" to 1,
             "acdeg" to 2,

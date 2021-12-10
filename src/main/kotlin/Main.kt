@@ -1,12 +1,12 @@
-val nYear = 2021
-val nDay = 10
+const val nYear = 2021
+const val nDay = 10
 val day = Day10()
-val taskLink = "https://adventofcode.com/$nYear/day/$nDay"
-val inputLink = "$taskLink/input"
-val submitLink = "$taskLink/answer"
-val submit = true
+const val taskLink = "https://adventofcode.com/$nYear/day/$nDay"
+const val inputLink = "$taskLink/input"
+const val submitLink = "$taskLink/answer"
+const val submit = false
 
-val cookie = System.getenv("AOC_COOKIE")
+val cookie: String? = System.getenv("AOC_COOKIE")
 
 val aocUtils = AOCUtils()
 
@@ -19,15 +19,12 @@ fun main() {
         day.part1(testInput)
     }
 
-    val ans1 = aocUtils.readInput().let {
-        if(it.isEmpty()){
+    val ans1 = aocUtils.readInput().let { lines ->
+        lines.ifEmpty {
             aocUtils.getInputLines()
                 .also {
                     aocUtils.saveInput(it, nDay)
                 }
-        }
-        else {
-            it
         }
     }.let {
         println("REAL 1")
@@ -49,15 +46,12 @@ fun main() {
     }
 
 
-    val ans2 = aocUtils.readInput().let {
-        if(it.isEmpty()){
+    val ans2 = aocUtils.readInput().let { lines ->
+        lines.ifEmpty {
             aocUtils.getInputLines()
                 .also {
                     aocUtils.saveInput(it, nDay)
                 }
-        }
-        else {
-            it
         }
     }.let {
         println("REAL 2")
