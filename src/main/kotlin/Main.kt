@@ -1,10 +1,10 @@
 const val nYear = 2021
-const val nDay = 11
-val day = Day11()
+const val nDay = 12
+val day = Day12()
 const val taskLink = "https://adventofcode.com/$nYear/day/$nDay"
 const val inputLink = "$taskLink/input"
 const val submitLink = "$taskLink/answer"
-const val submit = false
+const val submit = true
 
 val cookie: String? = System.getenv("AOC_COOKIE")
 
